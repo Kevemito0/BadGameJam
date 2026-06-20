@@ -1,27 +1,57 @@
+using System.Collections;
 using UnityEngine;
 
 public class NPCHealth : MonoBehaviour
 {
-    [SerializeField] private float deathRotationSpeed = 10f;
+    [SerializeField] private float deathRotationSpeed = 3f;
+
+    [Tooltip("Die animasyonunun süresi (saniye). Animator'daki clip süresine göre ayarla.")]
+    [SerializeField] private float deathAnimDuration = 1.5f;
 
     private bool _isDead = false;
     private bool _isFalling = false;
+    private Animator _animator;
 
     public bool IsDead => _isDead;
+
+    private void Awake()
+    {
+        _animator = GetComponentInChildren<Animator>();
+    }
 
     public void Die()
     {
         if (_isDead) return;
         _isDead = true;
 
-        // Collider'ı kapat ki bir daha vurulmasın / interact edilmesin
+        // Collider kapat
         Collider col = GetComponentInChildren<Collider>();
         if (col != null) col.enabled = false;
 
-        // Varsa NavMeshAgent durdur
+        // NavMeshAgent durdur
         var agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null) agent.enabled = false;
 
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Die");
+            StartCoroutine(FallAfterAnim());
+        }
+        else
+        {
+            _isFalling = true;
+        }
+    }
+
+    private IEnumerator FallAfterAnim()
+    {
+        // Die animasyonu oynasın
+        yield return new WaitForSeconds(deathAnimDuration);
+
+        // Animator'ı durdur, son frame'de kalsın
+        _animator.enabled = false;
+
+        // Şimdi yere yığıl
         _isFalling = true;
     }
 
@@ -29,17 +59,17 @@ public class NPCHealth : MonoBehaviour
     {
         if (!_isFalling) return;
 
-        // Yavaşça yatık konuma getir (90° X ekseni = yere düşmüş gibi)
+        Quaternion targetRot = Quaternion.Euler(90f, transform.eulerAngles.y, transform.eulerAngles.z);
+
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
-            Quaternion.Euler(90f, transform.eulerAngles.y, transform.eulerAngles.z),
+            targetRot,
             Time.deltaTime * deathRotationSpeed
         );
 
-        // Hedefe ulaşınca durdur
-        if (Quaternion.Angle(transform.rotation,
-                Quaternion.Euler(90f, transform.eulerAngles.y, transform.eulerAngles.z)) < 0.5f)
+        if (Quaternion.Angle(transform.rotation, targetRot) < 0.5f)
         {
+            transform.rotation = targetRot;
             _isFalling = false;
         }
     }

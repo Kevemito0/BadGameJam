@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -9,9 +10,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI textComp;
     [SerializeField] private float textSpeed = 0.05f;
+
     public bool IsOpen => dialoguePanel.activeSelf;
+
     private string[] lines;
     private int index;
+    private Action _onComplete;   // <-- diyalog bitince çağrılacak callback
 
     private void Awake()
     {
@@ -21,15 +25,12 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (!dialoguePanel.activeSelf)
-            return;
+        if (!dialoguePanel.activeSelf) return;
 
         if (Input.GetMouseButtonDown(0))
         {
             if (textComp.text == lines[index])
-            {
                 NextLine();
-            }
             else
             {
                 StopAllCoroutines();
@@ -38,10 +39,14 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(string[] dialogueLines)
+    /// <summary>
+    /// Diyalogu başlatır. Bitince isteğe bağlı onComplete callback'i çağırır.
+    /// </summary>
+    public void StartDialogue(string[] dialogueLines, Action onComplete = null)
     {
         lines = dialogueLines;
         index = 0;
+        _onComplete = onComplete;
 
         dialoguePanel.SetActive(true);
         textComp.text = "";
@@ -69,6 +74,8 @@ public class DialogueManager : MonoBehaviour
         else
         {
             dialoguePanel.SetActive(false);
+            _onComplete?.Invoke();   // diyalog bitti → NPC'ye haber ver
+            _onComplete = null;
         }
     }
 }

@@ -17,7 +17,6 @@ public class TimeLoopManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private GameObject loopBrokenUI;
 
-    // Sahne resetlenince sıfırlanmayan static flag
     private static bool s_loopBroken = false;
 
     private float _timer;
@@ -33,6 +32,8 @@ public class TimeLoopManager : MonoBehaviour
 
         _timer = 0f;
         _loopActive = startLoopOnAwake;
+
+        questManager?.ResetAll();
     }
 
     private void Start()
@@ -52,7 +53,6 @@ public class TimeLoopManager : MonoBehaviour
             TriggerReset();
     }
 
-
     public void BreakLoop()
     {
         if (s_loopBroken) return;
@@ -71,16 +71,12 @@ public class TimeLoopManager : MonoBehaviour
 
     public void StartLoop() => _loopActive = true;
     public void StopLoop()  => _loopActive = false;
-
     public void SetLoopDuration(float seconds) => loopDuration = seconds;
 
-    /// Ana menüden yeni oyun başlatılırken çağır
     public static void ResetStaticState()
     {
         s_loopBroken = false;
     }
-
-    // ─── Private ─────────────────────────────────────────────────
 
     private void TriggerReset()
     {
