@@ -2,18 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-/// <summary>
-/// Sahneyi belirli aralıklarla resetleyen Time Loop sistemi.
-///
-/// Loop kırma: Bu GameObject'e bir GameEventListener ekle,
-/// LoopBreakEvent asset'ini ata, Response = BreakLoop() bağla.
-/// Böylece herhangi bir script sadece event.Raise() yapar,
-/// TimeLoopManager'ı tanımak zorunda kalmaz.
-/// </summary>
 public class TimeLoopManager : MonoBehaviour
 {
     public static TimeLoopManager Instance { get; private set; }
-
+    
+    [Header("Quest")]
+    [SerializeField] private PlayerQuestManager questManager;
+    
     [Header("Loop Ayarları")]
     [SerializeField] private float loopDuration = 300f;
     [SerializeField] private bool startLoopOnAwake = true;
@@ -90,6 +85,7 @@ public class TimeLoopManager : MonoBehaviour
     private void TriggerReset()
     {
         _loopActive = false;
+        questManager?.ResetAll();
         Debug.Log("[TimeLoop] Süre doldu — sahne resetleniyor...");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

@@ -1542,7 +1542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ce2026d6774c2746b68eae7ff767f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeLoopManager
-  loopDuration: 300
+  questManager: {fileID: 11400000, guid: cf9bf0306130de24f8ea8f21d0f6d20a, type: 2}
+  loopDuration: 20
   startLoopOnAwake: 1
   timerText: {fileID: 1292753641}
   loopBrokenUI: {fileID: 0}

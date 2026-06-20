@@ -2098,6 +2098,7 @@ MonoBehaviour:
   quitBtn: {fileID: 1188929929}
   settingsPanel: {fileID: 1072193560}
   gameSceneName: GameScene
+  questManager: {fileID: 11400000, guid: cf9bf0306130de24f8ea8f21d0f6d20a, type: 2}
 --- !u!114 &1982442722
 MonoBehaviour:
   m_ObjectHideFlags: 0
