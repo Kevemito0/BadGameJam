@@ -9,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI textComp;
     [SerializeField] private float textSpeed = 0.05f;
-
+    public bool IsOpen => dialoguePanel.activeSelf;
     private string[] lines;
     private int index;
 
