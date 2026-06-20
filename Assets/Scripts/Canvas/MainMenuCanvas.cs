@@ -26,6 +26,8 @@ public class MainMenuCanvas : MonoBehaviour
 
     private void OnPlayClicked()
     {
+        TimeLoopManager.ResetStaticState();
+
         SceneManager.LoadScene(gameSceneName);
     }
 
