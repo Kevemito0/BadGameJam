@@ -1,4 +1,3 @@
-// Assets/Scripts/Objects/WeaponPickupObject.cs
 using UnityEngine;
 
 public class WeaponPickupObject : MonoBehaviour, IInteractable
@@ -7,7 +6,10 @@ public class WeaponPickupObject : MonoBehaviour, IInteractable
     [SerializeField] private PlayerQuestManager questManager;
 
     [Header("Weapon to enable on player")]
-    [SerializeField] private GameObject weaponObject; 
+    [SerializeField] private GameObject weaponObject;
+
+    [Header("Player Animator")]
+    [SerializeField] private Animator playerAnimator;
 
     [SerializeField] private string interactionTxt = "Pick Up Gun (E)";
     public string InteractionText => interactionTxt;
@@ -21,6 +23,10 @@ public class WeaponPickupObject : MonoBehaviour, IInteractable
         if (weaponObject != null)
             weaponObject.SetActive(true);
 
-        Destroy(gameObject); 
+        // Pickup animasyonunu tetikle
+        if (playerAnimator != null)
+            playerAnimator.SetBool("GunPickUp", true);
+
+        Destroy(gameObject);
     }
 }

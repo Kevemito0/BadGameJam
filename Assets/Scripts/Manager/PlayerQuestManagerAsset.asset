@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdca5a321c408304ebda36a0795259ad, type: 3}
   m_Name: PlayerQuestManagerAsset
   m_EditorClassIdentifier: Assembly-CSharp::PlayerQuestManager
-  hasWeapon: 0
+  hasWeapon: 1
   queueCleared: 0
   cardLoaded: 0
