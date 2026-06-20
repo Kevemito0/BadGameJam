@@ -3,6 +3,12 @@ using TMPro;
 
 public class PlayerShoot : MonoBehaviour
 {
+    [Header("Quest")]
+    [SerializeField] private PlayerQuestManager questManager;
+    
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem muzzleFlash;
+    
     [Header("Raycast")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float shootRange = 50f;
@@ -20,7 +26,9 @@ public class PlayerShoot : MonoBehaviour
     private void Update()
     {
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsOpen) return;
-
+        
+        if (!questManager.hasWeapon) return;
+        
         // Hit marker söndür
         if (hitMarkerText != null && _hitMarkerTimer > 0f)
         {
@@ -38,6 +46,14 @@ public class PlayerShoot : MonoBehaviour
 
     private void Shoot()
     {
+        Debug.Log("Shoot");
+
+        if (muzzleFlash != null)
+        {
+            Debug.Log("Play Muzzle");
+            muzzleFlash.Play();
+        }
+        
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
         bool hit = shootMask != 0

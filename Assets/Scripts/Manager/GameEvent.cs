@@ -8,7 +8,6 @@ public class GameEvent : ScriptableObject
 
     public void Raise()
     {
-        // Tersine döngü: listener kendini Raise içinde kaldırabilir
         for (int i = _listeners.Count - 1; i >= 0; i--)
             _listeners[i].OnEventRaised();
     }

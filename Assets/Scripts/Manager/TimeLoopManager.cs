@@ -57,12 +57,7 @@ public class TimeLoopManager : MonoBehaviour
             TriggerReset();
     }
 
-    // ─── Public API ──────────────────────────────────────────────
 
-    /// <summary>
-    /// GameEventListener'ın Response'una bağla VEYA doğrudan çağır.
-    /// Loop'u kalıcı olarak kırar, sahne artık resetlenmez.
-    /// </summary>
     public void BreakLoop()
     {
         if (s_loopBroken) return;

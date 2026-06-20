@@ -14,7 +14,9 @@ public class MainMenuCanvas : MonoBehaviour
 
     [Header("Scene")]
     [SerializeField] private string gameSceneName = "GameScene";
-
+    
+    
+    [SerializeField] private PlayerQuestManager questManager;
     private void Start()
     {
         playBtn.onClick.AddListener(OnPlayClicked);
@@ -26,8 +28,8 @@ public class MainMenuCanvas : MonoBehaviour
 
     private void OnPlayClicked()
     {
+        questManager.ResetAll();           
         TimeLoopManager.ResetStaticState();
-
         SceneManager.LoadScene(gameSceneName);
     }
 
