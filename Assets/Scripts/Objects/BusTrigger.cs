@@ -19,6 +19,6 @@ public class BusTrigger : MonoBehaviour, IInteractable
             Debug.Log("[Bus] Henüz hazır değil.");
             return;
         }
-        SceneManager.LoadScene(nextSceneName);
+        TimeLoopManager.Instance.BreakLoop();
     }
 }
