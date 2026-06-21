@@ -32,9 +32,6 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
         loopBreakEvent?.Raise();
 
-        // if (audioSource != null && talkClip != null)
-        //    audioSource.PlayOneShot(talkClip);
-
         SetShitIdle(true);
 
         DialogueManager.Instance.StartDialogue(dialogueLines, OnDialogueEnd, voicePitch);

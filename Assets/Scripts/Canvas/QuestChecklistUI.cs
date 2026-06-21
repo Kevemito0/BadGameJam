@@ -15,7 +15,6 @@ public class QuestChecklistUI : MonoBehaviour
     [SerializeField] private GameObject allDonePanel;
 
     private readonly string incomplete = "☐  ";
-    private readonly string complete   = "<color=#4CAF50>☑  </color>";
 
     private void OnEnable()
     {
@@ -30,10 +29,6 @@ public class QuestChecklistUI : MonoBehaviour
 
     private void Refresh()
     {
-        weaponText.text = (questManager.hasWeapon    ? complete : incomplete) + "Silahı bul";
-        queueText.text  = (questManager.queueCleared ? complete : incomplete) + "Sırayı geç";
-        cardText.text   = (questManager.cardLoaded   ? complete : incomplete) + "Kartı yükle";
-
         if (allDonePanel != null)
             allDonePanel.SetActive(questManager.AllQuestsComplete);
     }

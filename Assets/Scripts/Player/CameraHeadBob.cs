@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CameraHeadBob : MonoBehaviour
 {
-    [Header("Bob Ayarları")]
     [SerializeField] private float walkBobSpeed = 14f;       
     [SerializeField] private float walkBobAmount = 0.05f;    
 

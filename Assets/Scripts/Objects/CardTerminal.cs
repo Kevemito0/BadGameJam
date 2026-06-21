@@ -5,17 +5,17 @@ public class CardTerminal : MonoBehaviour, IInteractable
 {
     [SerializeField] private PlayerQuestManager questManager;
 
-    [SerializeField] private string interactionTxt  = "Kartı yükle [E]";
-    [SerializeField] private string noCardTxt       = "Önce İstanbulKart'ı bul";   // YENİ
-    [SerializeField] private string lockedTxt       = "Önce sırayı geç";
-    [SerializeField] private string doneTxt         = "Kart zaten yüklü";
+    [SerializeField] private string interactionTxt  = "Load the card [E]";
+    [SerializeField] private string noCardTxt       = "Find the card";   
+    [SerializeField] private string lockedTxt       = "sirayi sik";
+    [SerializeField] private string doneTxt         = "card is alrdy loaded";
 
     public string InteractionText
     {
         get
         {
             if (questManager.cardLoaded)        return doneTxt;
-            if (!questManager.hasIstanbulCard)  return noCardTxt;   // YENİ kontrol
+            if (!questManager.hasIstanbulCard)  return noCardTxt;   
             if (!questManager.queueCleared)     return lockedTxt;
             return interactionTxt;
         }

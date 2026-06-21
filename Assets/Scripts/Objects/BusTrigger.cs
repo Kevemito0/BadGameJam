@@ -7,15 +7,14 @@ public class BusTrigger : MonoBehaviour, IInteractable
     [SerializeField] private PlayerQuestManager questManager;
     [SerializeField] private string nextSceneName = "BusScene";
 
-    [SerializeField] private string lockedTxt    = "Otobüs kilitli";
-    [SerializeField] private string noCardTxt    = "Karta ihtiyacım var [E]";  // YENİ
-    [SerializeField] private string readyTxt     = "Otobüse bin [E]";
+    [SerializeField] private string lockedTxt    = "Locked";
+    [SerializeField] private string noCardTxt    = "You need Bus Card [E]";  
+    [SerializeField] private string readyTxt     = "Get in [E]";
 
-    [Header("İstanbulKart Monologu")]
     [SerializeField] private string[] noCardDialogue = new[]
     {
-        "Dur bir dakika... Otobüse binmek için İstanbulKart lazım. (buraya biz yazcaz)",
-        "Nerede bıraktım onu acaba? Önce kartı bulmalıyım."
+        "asd",
+        "dsa"
     };
 
     public string InteractionText
@@ -46,7 +45,6 @@ public class BusTrigger : MonoBehaviour, IInteractable
         
         if (!questManager.AllQuestsComplete)
         {
-            Debug.Log("[Bus] Henüz hazır değil.");
             return;
         }
 

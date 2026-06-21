@@ -6,9 +6,8 @@ public class IstanbulCardPickup : MonoBehaviour, IInteractable
     [Header("Quest")]
     [SerializeField] private PlayerQuestManager questManager;
 
-    [Header("Metinler")]
-    [SerializeField] private string interactionTxt  = "İstanbulKart'ı al [E]";
-    [SerializeField] private string alreadyHaveTxt  = "Kart zaten sende";
+    [SerializeField] private string interactionTxt  = "Get Card [E]";
+    [SerializeField] private string alreadyHaveTxt  = "u have it";
 
     public string InteractionText =>
         questManager.hasIstanbulCard ? alreadyHaveTxt : interactionTxt;

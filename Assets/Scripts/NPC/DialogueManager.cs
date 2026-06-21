@@ -47,7 +47,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // Callback olmadan da çağrılabilsin diye overload
     public void StartDialogue(string[] dialogueLines)
         => StartDialogue(dialogueLines, null);
 
@@ -55,7 +54,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogueLines == null || dialogueLines.Length == 0)
         {
-            Debug.LogWarning("DialogueManager: Diyalog satırları boş!");
+            Debug.LogWarning("DialogueManager: Dialogues are empty");
             return;
         }
 
@@ -64,7 +63,7 @@ public class DialogueManager : MonoBehaviour
         onDialogueEnd = onEnd;
 
         if (audioSource != null)
-            audioSource.pitch = pitch;      // gelen pitch'i uygula
+            audioSource.pitch = pitch;      
 
         dialoguePanel.SetActive(true);
         textComp.text = "";
@@ -96,7 +95,7 @@ public class DialogueManager : MonoBehaviour
         else
         {
             dialoguePanel.SetActive(false);
-            onDialogueEnd?.Invoke();   // callback'i tetikle
+            onDialogueEnd?.Invoke();   
             onDialogueEnd = null;
         }
     }

@@ -6,8 +6,6 @@ public class SatelliteCrash : MonoBehaviour
 {
     [Header("Sesler")]
     [SerializeField] private AudioClip crashSound;
-    // fallingSound artık SoundManager üzerinden değil, 
-    // direkt 2D AudioSource ile çalacak (kulakta duyulsun)
     [SerializeField] private AudioClip fallingSound;
 
     [Header("Ekran Kararma")]
@@ -24,11 +22,9 @@ public class SatelliteCrash : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
 
-        // 2D ses — spatialBlend 0 = kulakta sabit duyulur, mesafeye göre azalmaz
         _audioSource.spatialBlend = 0f;
         _audioSource.loop = true;
 
-        // Spawn olur olmaz düşme sesini başlat
         if (fallingSound != null)
         {
             _audioSource.clip = fallingSound;
@@ -46,11 +42,9 @@ public class SatelliteCrash : MonoBehaviour
         if (_crashed) return;
         _crashed = true;
 
-        // Düşme sesini durdur
         _audioSource.Stop();
         _audioSource.loop = false;
 
-        // Çarpma sesini çal
         if (crashSound != null)
             _audioSource.PlayOneShot(crashSound);
 

@@ -9,7 +9,7 @@ public class TimeLoopManager : MonoBehaviour
     [Header("Quest")]
     [SerializeField] private PlayerQuestManager questManager;
 
-    [Header("Loop Ayarları")]
+    [Header("Loop Settings")]
     [SerializeField] private float loopDuration = 300f;
     [SerializeField] private bool startLoopOnAwake = true;
 
@@ -19,7 +19,6 @@ public class TimeLoopManager : MonoBehaviour
 
     [Header("Satellite")]
     [SerializeField] private SatelliteSpawner satelliteSpawner;
-    [Tooltip("Süre bitiminden kaç saniye önce satellite spawn edilsin")]
     [SerializeField] private float satelliteWarningTime = 15f;
 
     private static bool s_loopBroken = false;
@@ -56,15 +55,13 @@ public class TimeLoopManager : MonoBehaviour
         _timer += Time.deltaTime;
         UpdateTimerUI();
 
-        // Uyarı süresi gelince satellite spawn et
         if (!_satelliteSpawned && TimeRemaining <= satelliteWarningTime)
         {
             _satelliteSpawned = true;
             satelliteSpawner?.SpawnSatellite();
         }
 
-        // Süre dolunca: satellite zaten düşüyor ve kendi reset'ini yapacak.
-        // Satellite spawn edilmediyse (spawner yoksa) burada sahneyi resetle.
+        
         if (_timer >= loopDuration && !_satelliteSpawned)
         {
             TriggerReset();
@@ -78,7 +75,7 @@ public class TimeLoopManager : MonoBehaviour
         s_loopBroken = true;
         _loopActive = false;
 
-        Debug.Log($"[TimeLoop] Loop kırıldı! Geçen süre: {_timer:F1}s");
+        Debug.Log($"[TimeLoop] Loop broken! Elapsed time: {_timer:F1}s");
 
         if (loopBrokenUI != null)
             loopBrokenUI.SetActive(true);
@@ -100,7 +97,7 @@ public class TimeLoopManager : MonoBehaviour
     {
         _loopActive = false;
         questManager?.ResetAll();
-        Debug.Log("[TimeLoop] Süre doldu — sahne resetleniyor...");
+        Debug.Log("[TimeLoop] Time is up");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

@@ -15,6 +15,5 @@ public class SatelliteSpawner : MonoBehaviour
             transform.position.z);
 
         Instantiate(satellitePrefab, spawnPos, Quaternion.identity);
-        // Ses SatelliteCrash.Awake() içinde otomatik başlıyor
     }
 }

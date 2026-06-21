@@ -7,9 +7,9 @@ public class BulletHoleManager : MonoBehaviour
 
     [Header("Bullet Hole")]
     [SerializeField] private GameObject bulletHolePrefab;
-    [SerializeField] private int maxHoles = 50;          // Maksimum aynı anda kaç delik
-    [SerializeField] private float holeLifetime = 10f;   // Saniye sonra yok olur (0 = sonsuz)
-    [SerializeField] private float offsetFromSurface = 0.01f; // Z-fighting önlemek için
+    [SerializeField] private int maxHoles = 50;          
+    [SerializeField] private float holeLifetime = 10f;   
+    [SerializeField] private float offsetFromSurface = 0.01f; 
 
     private readonly Queue<GameObject> _holePool = new();
 
@@ -19,16 +19,14 @@ public class BulletHoleManager : MonoBehaviour
     {
         if (bulletHolePrefab == null) return;
 
-        // Havuz doluysa en eskiyi sil
         if (_holePool.Count >= maxHoles)
         {
             GameObject old = _holePool.Dequeue();
             if (old != null) Destroy(old);
         }
 
-        // Yüzeyin normaline göre döndür
         Quaternion rotation = Quaternion.LookRotation(-normal) 
-                              * Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)); // rastgele z dönüşü
+                              * Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)); 
 
         Vector3 spawnPos = position + normal * offsetFromSurface;
         GameObject hole = Instantiate(bulletHolePrefab, spawnPos, rotation);

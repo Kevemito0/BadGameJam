@@ -5,8 +5,8 @@ public class NPCHealth : MonoBehaviour
     [SerializeField] private float deathRotationSpeed = 10f;
 
     [Header("Sesler")]
-    [SerializeField] private AudioClip deathClip;   // ölüm çığlığı
-    [SerializeField] private AudioClip fallClip;    // yere düşme sesi (opsiyonel)
+    [SerializeField] private AudioClip deathClip;   
+    [SerializeField] private AudioClip fallClip;   
     [SerializeField] private AudioSource audioSource;
 
     private bool _isDead = false;
@@ -20,7 +20,6 @@ public class NPCHealth : MonoBehaviour
         if (_isDead) return;
         _isDead = true;
 
-        // Ölüm sesini çal
         if (audioSource != null && deathClip != null)
             audioSource.PlayOneShot(deathClip);
 
@@ -43,7 +42,6 @@ public class NPCHealth : MonoBehaviour
             Time.deltaTime * deathRotationSpeed
         );
 
-        // Yere düşme sesini animasyon bitmek üzereyken çal
         if (!_fallSoundPlayed &&
             Quaternion.Angle(transform.rotation,
                 Quaternion.Euler(90f, transform.eulerAngles.y, transform.eulerAngles.z)) < 15f)
