@@ -2,17 +2,26 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
-    private static MusicManager instance;
+    public static MusicManager Instance { get; private set; }
+
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        instance = this;
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // Kaydedilmiş sesi yükle
+        float saved = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        SetVolume(saved);
     }
+
+    public void SetVolume(float volume)
+    {
+        if (audioSource != null)
+            audioSource.volume = volume;
+    }
+
+    public float GetVolume() => audioSource != null ? audioSource.volume : 1f;
 }

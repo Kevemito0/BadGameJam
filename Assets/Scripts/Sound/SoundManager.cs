@@ -35,7 +35,6 @@ public class SoundManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
 
-        // Kaydedilmiş ses seviyesini yükle, yoksa default kullan
         float saved = PlayerPrefs.GetFloat(MusicVolKey, defaultMusicVolume);
         SetMusicVolume(saved);
     }
@@ -68,8 +67,8 @@ public class SoundManager : MonoBehaviour
         if (instance == null) return;
         value = Mathf.Clamp01(value);
 
-        if (instance.musicSource != null)
-            instance.musicSource.volume = value;
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.SetVolume(value);
 
         PlayerPrefs.SetFloat(MusicVolKey, value);
         PlayerPrefs.Save();
@@ -77,6 +76,10 @@ public class SoundManager : MonoBehaviour
 
     public static float GetMusicVolume()
     {
+        // MusicManager aktifse ondan al (DontDestroyOnLoad ile yaşıyor)
+        if (MusicManager.Instance != null)
+            return MusicManager.Instance.GetVolume();
+
         return instance != null && instance.musicSource != null
             ? instance.musicSource.volume
             : PlayerPrefs.GetFloat(MusicVolKey, 0.5f);
