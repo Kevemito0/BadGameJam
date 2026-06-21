@@ -819,9 +819,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8542928796681930445}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9798bb3a1af05844c926075379ad040f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 434f68f08cd1abb42a58c7d06567752a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -882,7 +882,7 @@ AudioSource:
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
-  m_Pitch: 1
+  m_Pitch: 2.2
   Loop: 0
   Mute: 0
   Spatialize: 0
