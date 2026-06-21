@@ -3,11 +3,14 @@ using UnityEngine;
 public enum SoundType
 {
     GunShot,
-    Footstep,
+    GunPickup,
     SatelliteCrash,
     SatelliteSound,
     NPCTalk,
-    Jump
+    NPCDeath,
+    NPCFall,
+    Jump,
+    Footstep,
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -23,7 +26,6 @@ public class SoundManager : MonoBehaviour
         instance = this;
     }
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         audioSource = GetComponent<AudioSource>();

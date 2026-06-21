@@ -11,6 +11,11 @@ public class NPCInteraction : MonoBehaviour, IInteractable
     [Header("Time Loop")]
     [SerializeField] private GameEvent loopBreakEvent;
 
+    [Header("Sound")]
+    [SerializeField] private AudioClip talkClip;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private float voicePitch = 1.3f;
+
     private Animator _animator;
     private static readonly int ShitIdle = Animator.StringToHash("ShitIdle");
 
@@ -27,15 +32,16 @@ public class NPCInteraction : MonoBehaviour, IInteractable
 
         loopBreakEvent?.Raise();
 
-        // Diyalog başlarken ShitIdle anim'i aç
+        // if (audioSource != null && talkClip != null)
+        //    audioSource.PlayOneShot(talkClip);
+
         SetShitIdle(true);
 
-        DialogueManager.Instance.StartDialogue(dialogueLines, OnDialogueEnd);
+        DialogueManager.Instance.StartDialogue(dialogueLines, OnDialogueEnd, voicePitch);
     }
 
     private void OnDialogueEnd()
     {
-        // Diyalog bitince normal idle'a dön
         SetShitIdle(false);
     }
 

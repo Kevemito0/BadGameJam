@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,11 +12,16 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textComp;
     [SerializeField] private float textSpeed = 0.05f;
 
-    public bool IsOpen => dialoguePanel.activeSelf;
+    [Header("Dialogue Sounds")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] talkSounds;
+    [SerializeField] private float pitch = 1.3f;
 
     private string[] lines;
     private int index;
-    private Action _onComplete;   
+    private Action onDialogueEnd;   // callback
+
+    public bool IsOpen => dialoguePanel.activeSelf;   // IsOpen property
 
     private void Awake()
     {
@@ -25,8 +31,9 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (!dialoguePanel.activeSelf) return;
-        if (lines == null || index >= lines.Length) return; 
+        if (!IsOpen) return;
+        if (lines == null || lines.Length == 0) return;        
+        if (index < 0 || index >= lines.Length) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -40,24 +47,35 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
- 
-    public void StartDialogue(string[] dialogueLines, Action onComplete = null)
+    // Callback olmadan da çağrılabilsin diye overload
+    public void StartDialogue(string[] dialogueLines)
+        => StartDialogue(dialogueLines, null);
+
+    public void StartDialogue(string[] dialogueLines, Action onEnd = null, float pitch = 1f)
     {
-        if (dialogueLines == null || dialogueLines.Length == 0) return;
-        
+        if (dialogueLines == null || dialogueLines.Length == 0)
+        {
+            Debug.LogWarning("DialogueManager: Diyalog satırları boş!");
+            return;
+        }
+
         lines = dialogueLines;
         index = 0;
-        _onComplete = onComplete;
+        onDialogueEnd = onEnd;
+
+        if (audioSource != null)
+            audioSource.pitch = pitch;      // gelen pitch'i uygula
 
         dialoguePanel.SetActive(true);
         textComp.text = "";
 
+        PlayRandomTalkSound();
         StartCoroutine(TypeLine());
     }
 
     IEnumerator TypeLine()
     {
-        if (index >= lines.Length) yield break;
+        if (index < 0 || index >= lines.Length) yield break;
         
         foreach (char c in lines[index])
         {
@@ -72,13 +90,21 @@ public class DialogueManager : MonoBehaviour
         {
             index++;
             textComp.text = "";
+            PlayRandomTalkSound();
             StartCoroutine(TypeLine());
         }
         else
         {
             dialoguePanel.SetActive(false);
-            _onComplete?.Invoke();   // diyalog bitti → NPC'ye haber ver
-            _onComplete = null;
+            onDialogueEnd?.Invoke();   // callback'i tetikle
+            onDialogueEnd = null;
         }
+    }
+
+    void PlayRandomTalkSound()
+    {
+        if (audioSource == null || talkSounds == null || talkSounds.Length == 0) return;
+
+        audioSource.PlayOneShot(talkSounds[UnityEngine.Random.Range(0, talkSounds.Length)]);
     }
 }

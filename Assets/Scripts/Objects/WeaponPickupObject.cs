@@ -26,6 +26,8 @@ public class WeaponPickupObject : MonoBehaviour, IInteractable
         // Pickup animasyonunu tetikle
         if (playerAnimator != null)
             playerAnimator.SetBool("GunPickUp", true);
+        
+        SoundManager.PlaySound(SoundType.GunPickup);
 
         Destroy(gameObject);
     }
