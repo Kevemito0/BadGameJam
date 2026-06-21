@@ -24,17 +24,21 @@ public class SatelliteCrash : MonoBehaviour
 
         _audioSource.spatialBlend = 0f;
         _audioSource.loop = true;
-
-        if (fallingSound != null)
-        {
-            _audioSource.clip = fallingSound;
-            _audioSource.Play();
-        }
+        // Spawn olunca ses yok — PlayFallingSound() dışarıdan çağrılır
     }
 
     private void Start()
     {
         CreateFadeOverlay();
+    }
+
+    public void PlayFallingSound()
+    {
+        if (fallingSound != null)
+        {
+            _audioSource.clip = fallingSound;
+            _audioSource.Play();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -14,6 +14,10 @@ public class SatelliteSpawner : MonoBehaviour
             spawnHeight,
             transform.position.z);
 
-        Instantiate(satellitePrefab, spawnPos, Quaternion.identity);
+        GameObject satellite = Instantiate(satellitePrefab, spawnPos, Quaternion.identity);
+
+        SatelliteCrash crash = satellite.GetComponent<SatelliteCrash>();
+        if (crash != null)
+            crash.PlayFallingSound();
     }
 }

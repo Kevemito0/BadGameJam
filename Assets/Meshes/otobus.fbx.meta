@@ -5,10 +5,15 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bokpusur
+    second: {fileID: 2100000, guid: 95a52449249b3b54eac7edda82b010cb, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: bokpusurtexture
-    second: {fileID: 2800000, guid: 2f02d69d7f2bad0489571a05e3b9b8c3, type: 3}
+    second: {fileID: 2800000, guid: adffd8dda664ab94bbc52406c48ea5c1, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
