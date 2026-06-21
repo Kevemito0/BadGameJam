@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameMenu : MonoBehaviour
@@ -6,12 +7,15 @@ public class GameMenu : MonoBehaviour
     
     [SerializeField] GameObject menuPanel;
     [SerializeField] Button resumeBtn;
+    [SerializeField] Button quitBtn;
+    
     bool isMenuOpen = false;
     
     void Start()
     {
         menuPanel.SetActive(false);
         resumeBtn.onClick.AddListener(OnResumeClicked);
+        quitBtn.onClick.AddListener(onQuitClicked);
         isMenuOpen = false;
     }
 
@@ -38,5 +42,10 @@ public class GameMenu : MonoBehaviour
     void OnResumeClicked()
     {
         ToggleMenu();
+    }
+
+    void onQuitClicked()
+    {
+        SceneManager.LoadScene(0);
     }
 }

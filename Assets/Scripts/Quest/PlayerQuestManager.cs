@@ -24,7 +24,6 @@ public class PlayerQuestManager : ScriptableObject
 
     public void PickupWeapon()
     {
-        if (!hasIstanbulCard) {  return; }
         if (hasWeapon) return;
         hasWeapon = true;
         OnQuestStateChanged?.Invoke();
