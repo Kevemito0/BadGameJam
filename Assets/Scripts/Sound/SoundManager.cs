@@ -6,7 +6,7 @@ public enum SoundType
     GunPickup,
     CardDeclined,
     SatelliteCrash,
-    SatelliteSound,
+    BakiyeYukleme,
     Jump,
     Footstep,
 }

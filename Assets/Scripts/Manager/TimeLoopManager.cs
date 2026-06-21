@@ -92,19 +92,24 @@ public class TimeLoopManager : MonoBehaviour
     public void BreakLoop()
     {
         if (s_loopBroken) return;
-
         s_loopBroken = true;
-        _loopActive  = false;
+        _loopActive = false;
 
-        Debug.Log($"[TimeLoop] Loop broken! Elapsed time: {_timer:F1}s");
+        Debug.Log($"[TimeLoop] BreakLoop called. UI ref: {loopBrokenUI}");
 
         if (loopBrokenUI != null)
+        {
+            // Parent'ları da aktif et
+            Transform t = loopBrokenUI.transform;
+            while (t != null)
+            {
+                Debug.Log($"Parent: {t.name} aktif: {t.gameObject.activeSelf}");
+                t = t.parent;
+            }
+        
             loopBrokenUI.SetActive(true);
-
-        if (timerText != null)
-            timerText.text = "∞";
+        }
     }
-
     public void StartLoop()                    => _loopActive  = true;
     public void StopLoop()                     => _loopActive  = false;
     public void SetLoopDuration(float seconds) => loopDuration = seconds;

@@ -24,5 +24,6 @@ public class CardTerminal : MonoBehaviour, IInteractable
     public void Interact()
     {
         questManager.LoadCard();
+        SoundManager.PlaySound(SoundType.BakiyeYukleme);
     }
 }

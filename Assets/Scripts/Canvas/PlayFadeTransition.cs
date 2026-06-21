@@ -1,5 +1,3 @@
-
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,30 +7,24 @@ using TMPro;
 public class PlayFadeTransition : MonoBehaviour
 {
     [Header("Canvas Referansları")]
-    [SerializeField] private CanvasGroup fadeCanvasGroup;   // siyah panelin CanvasGroup'u
-    [SerializeField] private Image fadePanel;               // tam ekran siyah Image
+    [SerializeField] private CanvasGroup fadeCanvasGroup;
+    [SerializeField] private Image fadePanel;
 
     [Header("Loading Metni")]
-    [SerializeField] private TextMeshProUGUI loadingText;   // "Yükleniyor..." yazısı
-    [SerializeField] private TextMeshProUGUI tipText;       // opsiyonel ipucu yazısı
+    [SerializeField] private TextMeshProUGUI loadingText;
+    [SerializeField] private TextMeshProUGUI tipText;
+    [SerializeField] private Image progressBarFill;
 
-    [SerializeField] private Image progressBarFill;         // fillAmount kullanılacak Image
+    [Header("Press E")]
+    [SerializeField] private TextMeshProUGUI pressEText;
+    [SerializeField] private string pressEMessage = "press E To Start";
 
-    [SerializeField] private float fadeDuration    = 0.8f;  // siyaha geçiş süresi
-    [SerializeField] private float minLoadingTime  = 2.5f;  // sahne hazır olsa bile minimum bekleme
-    [SerializeField] private string targetScene    = "GameScene";
+    [SerializeField] private float fadeDuration   = 0.8f;
+    [SerializeField] private float minLoadingTime = 2.5f;
+    [SerializeField] private string targetScene   = "GameScene";
 
-    [TextArea]
-    [SerializeField] private string[] loadingMessages = new string[]
-    {
-        
-    };
-
-    [TextArea]
-    [SerializeField] private string[] tips = new string[]
-    {
-        
-    };
+    [TextArea] [SerializeField] private string[] loadingMessages = new string[] { };
+    [TextArea] [SerializeField] private string[] tips            = new string[] { };
 
     private void Awake()
     {
@@ -52,36 +44,34 @@ public class PlayFadeTransition : MonoBehaviour
 
     private IEnumerator TransitionRoutine()
     {
-        // ── 1. Fade-in (şeffaftan siyaha) ──────────────────────────────────
+        // ── 1. Fade-in ──────────────────────────────────────────
         if (fadeCanvasGroup != null)
         {
             fadeCanvasGroup.blocksRaycasts = true;
-            float elapsed = 0f;
-            while (elapsed < fadeDuration)
+            float e = 0f;
+            while (e < fadeDuration)
             {
-                elapsed += Time.unscaledDeltaTime;
-                fadeCanvasGroup.alpha = Mathf.Clamp01(elapsed / fadeDuration);
+                e += Time.unscaledDeltaTime;
+                fadeCanvasGroup.alpha = Mathf.Clamp01(e / fadeDuration);
                 yield return null;
             }
             fadeCanvasGroup.alpha = 1f;
         }
 
-        // ── 2. İpucunu seç ─────────────────────────────────────────────────
+        // ── 2. İpucu ────────────────────────────────────────────
         if (tipText != null && tips.Length > 0)
             tipText.text = tips[Random.Range(0, tips.Length)];
 
-        // ── 3. Sahneyi arka planda yükle ───────────────────────────────────
+        // ── 3. Sahneyi arka planda yükle ────────────────────────
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(targetScene);
-        asyncLoad.allowSceneActivation = false;   // hazır olsa bile bekle
+        asyncLoad.allowSceneActivation = false;
 
         float fakeProgress = 0f;
-        float realProgress = 0f;
         float timeSpent    = 0f;
         int   msgIndex     = 0;
         float msgTimer     = 0f;
         float msgInterval  = minLoadingTime / Mathf.Max(1, loadingMessages.Length);
 
-        // İlk mesajı göster
         if (loadingText != null && loadingMessages.Length > 0)
             loadingText.text = loadingMessages[0];
 
@@ -89,16 +79,14 @@ public class PlayFadeTransition : MonoBehaviour
         {
             timeSpent    += Time.unscaledDeltaTime;
             msgTimer     += Time.unscaledDeltaTime;
-            realProgress  = asyncLoad.progress / 0.9f;          // Unity 0..0.9 döndürür
+            float real    = asyncLoad.progress / 0.9f;
             fakeProgress  = Mathf.MoveTowards(fakeProgress,
-                                Mathf.Max(realProgress, timeSpent / minLoadingTime),
+                                Mathf.Max(real, timeSpent / minLoadingTime),
                                 Time.unscaledDeltaTime * 0.6f);
 
-            // Progress bar güncelle
             if (progressBarFill != null)
                 progressBarFill.fillAmount = Mathf.Clamp01(fakeProgress);
 
-            // Mesaj döngüsü
             if (msgTimer >= msgInterval && loadingMessages.Length > 0)
             {
                 msgTimer = 0f;
@@ -110,13 +98,21 @@ public class PlayFadeTransition : MonoBehaviour
             yield return null;
         }
 
-        // Son mesaj & bar
+        // ── 4. Loading bitti: bar dolu, loadingText temizle, pressE göster ──
         if (progressBarFill != null) progressBarFill.fillAmount = 1f;
-        if (loadingText != null)     loadingText.text = "Done!";
+        if (loadingText != null)     loadingText.text = "";
 
-        yield return new WaitForSecondsRealtime(0.4f);
+        if (pressEText != null)
+            pressEText.text = pressEMessage;
 
-        // ── 4. Sahneyi aktifleştir ─────────────────────────────────────────
+        // ── 5. E tuşunu bekle ───────────────────────────────────
+        while (!Input.GetKeyDown(KeyCode.E))
+            yield return null;
+
+        if (pressEText != null)
+            pressEText.text = "";
+
+        // ── 6. Sahneyi aktifleştir ──────────────────────────────
         asyncLoad.allowSceneActivation = true;
     }
 }
