@@ -5,10 +5,15 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: insan
+    second: {fileID: 2100000, guid: 8430d6226e815224d87f12a3832ab8aa, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: insan
-    second: {fileID: 2800000, guid: 51674447c96ed194e9e290f71fe17ea6, type: 3}
+    second: {fileID: 2800000, guid: e856ef171112d0540879f65268719d14, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -48,7 +53,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0

@@ -8209,9 +8209,8 @@ MonoBehaviour:
   minLoadingTime: 2.5
   targetScene: GameScene
   loadingMessages:
-  - Loading king
-  tips:
-  - None have fun
+  - Loading...
+  tips: []
 --- !u!1001 &1807943652
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -95,8 +95,8 @@ public class TimeLoopManager : MonoBehaviour
         _loopActive = false;
 
         Debug.Log($"[TimeLoop] Loop broken! Elapsed time: {_timer:F1}s");
-
-        loopEndPanel?.ShowPanel("Loop is ended!"); // SetActive yerine bunu çağır
+        string msg = "Johnnie Sattelite took a bus but it crashed and exploded, there were no survivors.";
+        loopEndPanel?.ShowPanel(msg); 
 
         if (timerText != null)
             timerText.text = "∞";
