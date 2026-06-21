@@ -1,7 +1,4 @@
-// Assets/Scripts/Canvas/PlayFadeTransition.cs
-// Bağımlılıklar: TMPro, UnityEngine.UI
-// Sahneye bir Canvas objesi ekle, bu scripti bağla, ardından MainMenuCanvas içinde
-// OnPlayClicked() metodunu bu scriptin StartTransition() metoduna yönlendir.
+
 
 using System.Collections;
 using UnityEngine;
@@ -19,39 +16,26 @@ public class PlayFadeTransition : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loadingText;   // "Yükleniyor..." yazısı
     [SerializeField] private TextMeshProUGUI tipText;       // opsiyonel ipucu yazısı
 
-    [Header("Progress Bar (opsiyonel)")]
     [SerializeField] private Image progressBarFill;         // fillAmount kullanılacak Image
 
-    [Header("Süre Ayarları")]
     [SerializeField] private float fadeDuration    = 0.8f;  // siyaha geçiş süresi
     [SerializeField] private float minLoadingTime  = 2.5f;  // sahne hazır olsa bile minimum bekleme
     [SerializeField] private string targetScene    = "GameScene";
 
-    [Header("Fake Loading Mesajları")]
     [TextArea]
     [SerializeField] private string[] loadingMessages = new string[]
     {
-        "Dünya yükleniyor...",
-        "NPC'ler hazırlanıyor...",
-        "Zaman döngüsü başlatılıyor...",
-        "İstanbul kartı aranıyor...",
-        "Uyduları yörüngeye oturtuyoruz...",
-        "Geçmiş silinemez, yükleniyor..."
+        
     };
 
-    [Header("İpuçları (Tip)")]
     [TextArea]
     [SerializeField] private string[] tips = new string[]
     {
-        "İPUCU: Önce kartı al, sonra silahı.",
-        "İPUCU: Kuyruğu temizlemeden terminale gidemezsin.",
-        "İPUCU: Uydu düşmeden önce kaç.",
-        "İPUCU: NPC ile konuşmak döngüyü etkiler.",
+        
     };
 
     private void Awake()
     {
-        // Başlangıçta tamamen şeffaf ve deaktif
         if (fadeCanvasGroup != null)
         {
             fadeCanvasGroup.alpha = 0f;
@@ -60,9 +44,6 @@ public class PlayFadeTransition : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// MainMenuCanvas.OnPlayClicked() içinden çağır.
-    /// </summary>
     public void StartTransition()
     {
         gameObject.SetActive(true);
@@ -131,7 +112,7 @@ public class PlayFadeTransition : MonoBehaviour
 
         // Son mesaj & bar
         if (progressBarFill != null) progressBarFill.fillAmount = 1f;
-        if (loadingText != null)     loadingText.text = "Hazır!";
+        if (loadingText != null)     loadingText.text = "Done!";
 
         yield return new WaitForSecondsRealtime(0.4f);
 
