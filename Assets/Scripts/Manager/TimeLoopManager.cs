@@ -15,10 +15,10 @@ public class TimeLoopManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private GameObject loopBrokenUI;
-
-    [Header("Loop End Panel")]
     [SerializeField] private LoopEndPanel loopEndPanel;
+    
+    
+    [Header("Loop End Panel")]
     [SerializeField] private string loopEndMessage = "Zaman doldu!";  // Panelde çıkacak yazı
 
     [Header("Satellite")]
@@ -51,8 +51,6 @@ public class TimeLoopManager : MonoBehaviour
 
     private void Start()
     {
-        if (loopBrokenUI != null)
-            loopBrokenUI.SetActive(s_loopBroken);
     }
 
     private void Update()
@@ -92,24 +90,18 @@ public class TimeLoopManager : MonoBehaviour
     public void BreakLoop()
     {
         if (s_loopBroken) return;
+
         s_loopBroken = true;
         _loopActive = false;
 
-        Debug.Log($"[TimeLoop] BreakLoop called. UI ref: {loopBrokenUI}");
+        Debug.Log($"[TimeLoop] Loop broken! Elapsed time: {_timer:F1}s");
 
-        if (loopBrokenUI != null)
-        {
-            // Parent'ları da aktif et
-            Transform t = loopBrokenUI.transform;
-            while (t != null)
-            {
-                Debug.Log($"Parent: {t.name} aktif: {t.gameObject.activeSelf}");
-                t = t.parent;
-            }
-        
-            loopBrokenUI.SetActive(true);
-        }
+        loopEndPanel?.ShowPanel("Loop is ended!"); // SetActive yerine bunu çağır
+
+        if (timerText != null)
+            timerText.text = "∞";
     }
+    
     public void StartLoop()                    => _loopActive  = true;
     public void StopLoop()                     => _loopActive  = false;
     public void SetLoopDuration(float seconds) => loopDuration = seconds;
