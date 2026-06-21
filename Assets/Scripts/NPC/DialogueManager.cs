@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
 
     private string[] lines;
     private int index;
-    private Action _onComplete;   // <-- diyalog bitince çağrılacak callback
+    private Action _onComplete;   
 
     private void Awake()
     {
@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
         if (!dialoguePanel.activeSelf) return;
+        if (lines == null || index >= lines.Length) return; 
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -39,11 +40,11 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Diyalogu başlatır. Bitince isteğe bağlı onComplete callback'i çağırır.
-    /// </summary>
+ 
     public void StartDialogue(string[] dialogueLines, Action onComplete = null)
     {
+        if (dialogueLines == null || dialogueLines.Length == 0) return;
+        
         lines = dialogueLines;
         index = 0;
         _onComplete = onComplete;
@@ -56,6 +57,8 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeLine()
     {
+        if (index >= lines.Length) yield break;
+        
         foreach (char c in lines[index])
         {
             textComp.text += c;
