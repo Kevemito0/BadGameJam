@@ -126,4 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SatelliteSpawner
   satellitePrefab: {fileID: 1539894991033187809, guid: ce01b47796baed74996ec2d36db76459, type: 3}
-  spawnHeight: 100
+  spawnHeight: 500

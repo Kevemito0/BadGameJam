@@ -5,10 +5,10 @@ using TMPro;
 public class TimeLoopManager : MonoBehaviour
 {
     public static TimeLoopManager Instance { get; private set; }
-    
+
     [Header("Quest")]
     [SerializeField] private PlayerQuestManager questManager;
-    
+
     [Header("Loop Ayarları")]
     [SerializeField] private float loopDuration = 300f;
     [SerializeField] private bool startLoopOnAwake = true;
@@ -17,10 +17,16 @@ public class TimeLoopManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private GameObject loopBrokenUI;
 
+    [Header("Satellite")]
+    [SerializeField] private SatelliteSpawner satelliteSpawner;
+    [Tooltip("Süre bitiminden kaç saniye önce satellite spawn edilsin")]
+    [SerializeField] private float satelliteWarningTime = 15f;
+
     private static bool s_loopBroken = false;
 
     private float _timer;
     private bool _loopActive;
+    private bool _satelliteSpawned = false;
 
     public bool LoopBroken => s_loopBroken;
     public float TimeRemaining => Mathf.Max(0f, loopDuration - _timer);
@@ -32,6 +38,7 @@ public class TimeLoopManager : MonoBehaviour
 
         _timer = 0f;
         _loopActive = startLoopOnAwake;
+        _satelliteSpawned = false;
 
         questManager?.ResetAll();
     }
@@ -49,8 +56,19 @@ public class TimeLoopManager : MonoBehaviour
         _timer += Time.deltaTime;
         UpdateTimerUI();
 
-        if (_timer >= loopDuration)
+        // Uyarı süresi gelince satellite spawn et
+        if (!_satelliteSpawned && TimeRemaining <= satelliteWarningTime)
+        {
+            _satelliteSpawned = true;
+            satelliteSpawner?.SpawnSatellite();
+        }
+
+        // Süre dolunca: satellite zaten düşüyor ve kendi reset'ini yapacak.
+        // Satellite spawn edilmediyse (spawner yoksa) burada sahneyi resetle.
+        if (_timer >= loopDuration && !_satelliteSpawned)
+        {
             TriggerReset();
+        }
     }
 
     public void BreakLoop()

@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class PlayerQuestManager : ScriptableObject
 {
     [Header("Quest State")]
+    public bool istCardFound   = false;
     public bool hasWeapon      = false;
     public bool queueCleared   = false;
     public bool cardLoaded     = false;
@@ -15,6 +16,15 @@ public class PlayerQuestManager : ScriptableObject
 
     public bool AllQuestsComplete => hasWeapon && queueCleared && cardLoaded;
 
+
+    public void IstCardFound()
+    {
+        if(istCardFound) return;
+        istCardFound = true;
+        OnQuestStateChanged?.Invoke();
+        Debug.Log("[Quest] ist card found.");
+    }
+    
     public void PickupWeapon()
     {
         if (hasWeapon) return;
