@@ -2,17 +2,27 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
-    private static MusicManager instance;
+    public static MusicManager Instance { get; private set; }
+
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
-        if (instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    public void SetVolume(float volume)
+    {
+        if (audioSource != null)
+            audioSource.volume = volume;
+    }
+
+    public float GetVolume() => audioSource != null ? audioSource.volume : 1f;
 }
