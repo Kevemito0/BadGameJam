@@ -8,14 +8,13 @@ public class MusicManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // Kaydedilmiş sesi yükle
+        float saved = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        SetVolume(saved);
     }
 
     public void SetVolume(float volume)
