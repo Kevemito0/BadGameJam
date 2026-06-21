@@ -4,11 +4,9 @@ public enum SoundType
 {
     GunShot,
     GunPickup,
+    CardDeclined,
     SatelliteCrash,
     SatelliteSound,
-    NPCTalk,
-    NPCDeath,
-    NPCFall,
     Jump,
     Footstep,
 }

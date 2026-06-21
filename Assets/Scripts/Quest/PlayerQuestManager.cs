@@ -1,4 +1,4 @@
-// Assets/Scripts/Manager/PlayerQuestManager.cs
+// Assets/Scripts/Quest/PlayerQuestManager.cs
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,33 +6,36 @@ using UnityEngine.Events;
 public class PlayerQuestManager : ScriptableObject
 {
     [Header("Quest State")]
-    public bool istCardFound   = false;
-    public bool hasWeapon      = false;
-    public bool queueCleared   = false;
-    public bool cardLoaded     = false;
+    public bool hasIstanbulCard = false;  // YENİ — ilk zorunlu adım
+    public bool hasWeapon       = false;
+    public bool queueCleared    = false;
+    public bool cardLoaded      = false;
 
     // UI'ya bildir
     public UnityAction OnQuestStateChanged;
 
-    public bool AllQuestsComplete => hasWeapon && queueCleared && cardLoaded;
+    public bool AllQuestsComplete => hasIstanbulCard && hasWeapon && queueCleared && cardLoaded;
 
-
-    public void IstCardFound()
+    // ── İstanbulKart ──────────────────────────────────────────────
+    public void PickupIstanbulCard()
     {
-        if(istCardFound) return;
-        istCardFound = true;
+        if (hasIstanbulCard) return;
+        hasIstanbulCard = true;
         OnQuestStateChanged?.Invoke();
-        Debug.Log("[Quest] ist card found.");
+        Debug.Log("[Quest] İstanbulKart alındı.");
     }
-    
+
+    // ── Silah ─────────────────────────────────────────────────────
     public void PickupWeapon()
     {
+        if (!hasIstanbulCard) { Debug.Log("[Quest] Önce İstanbulKart'ı bul!"); return; }
         if (hasWeapon) return;
         hasWeapon = true;
         OnQuestStateChanged?.Invoke();
         Debug.Log("[Quest] Silah alındı.");
     }
 
+    // ── Sıra ──────────────────────────────────────────────────────
     public void ClearQueue()
     {
         if (!hasWeapon) { Debug.Log("[Quest] Önce silahı bul!"); return; }
@@ -42,20 +45,24 @@ public class PlayerQuestManager : ScriptableObject
         Debug.Log("[Quest] Sıra temizlendi.");
     }
 
+    // ── Kart Yükleme ──────────────────────────────────────────────
     public void LoadCard()
     {
-        if (!queueCleared) { Debug.Log("[Quest] Önce sırayı geç!"); return; }
+        if (!hasIstanbulCard) { Debug.Log("[Quest] Önce İstanbulKart'ı bul!"); return; }
+        if (!queueCleared)    { Debug.Log("[Quest] Önce sırayı geç!"); return; }
         if (cardLoaded) return;
         cardLoaded = true;
         OnQuestStateChanged?.Invoke();
         Debug.Log("[Quest] Kart yüklendi! Tüm görevler tamam.");
     }
 
+    // ── Reset ──────────────────────────────────────────────────────
     public void ResetAll()
     {
-        hasWeapon    = false;
-        queueCleared = false;
-        cardLoaded   = false;
+        hasIstanbulCard = false;
+        hasWeapon       = false;
+        queueCleared    = false;
+        cardLoaded      = false;
         OnQuestStateChanged?.Invoke();
     }
 }
